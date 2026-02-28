@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+header {
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  padding: 40px;
+}
+
+section {
+  padding: 30px;
+}
+
+footer {
+  background: #020617;
+  padding: 20px;
+}
