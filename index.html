@@ -1,35 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Aura Drive</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Driver Safety</title>
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
+  <!-- HEADER -->
   <header>
-    <h1>🚗 Aura Drive</h1>
-    <p>AI-Powered Accident Prevention System</p>
+    <h1>🚗 AI Driver Safety System</h1>
+    <p>Real-time drowsiness detection and emergency response</p>
   </header>
 
-  <section>
-    <h2>About</h2>
-    <p>
-      Aura Drive uses AI to detect driver drowsiness, road hazards,
-      and prevent accidents in real time.
-    </p>
+  <!-- CAMERA / AI SECTION -->
+  <section id="ai-section">
+    <h2>🎥 Driver Monitoring</h2>
+
+    <div class="camera-box">
+      <video id="camera" autoplay muted></video>
+      <div class="overlay">Analyzing...</div>
+    </div>
+
+    <p id="status">Status: <span class="safe">Awake</span></p>
+    <button onclick="startDemo()">Start Demo</button>
   </section>
 
-  <section>
-    <h2>Features</h2>
-    <ul>
-      <li>😴 AI Drowsiness Detection</li>
-      <li>🛣️ Smart Pothole Reporter</li>
-      <li>📵 Auto Driving Reply</li>
-    </ul>
+  <!-- ALERT SECTION -->
+  <section id="alert-section">
+    <h2>🔊 Alerts</h2>
+    <p id="alert-text">No alerts yet</p>
   </section>
 
+  <!-- SOS SECTION -->
+  <section id="sos-section">
+    <h2>🚨 Emergency</h2>
+    <p id="sos-status">SOS inactive</p>
+    <button onclick="triggerSOS()">Send SOS</button>
+  </section>
+
+  <!-- FOOTER -->
   <footer>
-    <p>Made with ❤️ by Team Aura</p>
+    <p>Made with ❤️ by Team AI Safety</p>
   </footer>
+
+  <!-- JS FILES (order matters) -->
+  <script src="ai.js"></script>
+  <script src="alert.js"></script>
+  <script src="sos.js"></script>
+  <script src="main.js"></script>
+
 </body>
 </html>
