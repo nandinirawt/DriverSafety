@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Aura Drive</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- LOGIN SCREEN -->
+
+<div id="authScreen">
+<div class="auth-box">
+
+<h2><i class="fas fa-car"></i> Aura Drive Login</h2>
+
+<input type="text" id="username" placeholder="Username">
+
+<input type="password" id="password" placeholder="Password">
+
+<button class="primary" onclick="login()">Login</button>
+
+<button onclick="signup()">Sign Up</button>
+
+</div>
+</div>
+
+<!-- DASHBOARD -->
+
+<div id="dashboard">
+
+<h1><i class="fas fa-car"></i> Aura Drive Dashboard</h1>
+
+<div class="top-section">
+
+<!-- ROAD CAMERA -->
+
+<div class="card">
+
+<h3><i class="fas fa-road"></i> Road Camera Monitoring</h3>
+
+<video id="roadCamera" autoplay></video>
+
+<div id="roadStatus" class="status active">Road Clear</div>
+
+<button class="primary" onclick="startRoadCamera()">Start Road Camera</button>
+
+<button onclick="detectObstacle()">Detect Obstacle</button>
+
+</div>
+
+<!-- DRIVER CAMERA -->
+
+<div class="card">
+
+<h3><i class="fas fa-eye"></i> AI Driver Monitoring</h3>
+
+<video id="driverCamera" autoplay></video>
+
+<div id="driverStatus" class="status active">Driver Active</div>
+
+<div id="eyeTimer" class="status warning"></div>
+
+<button class="primary" onclick="startDriverCamera()">Start Driver Camera</button>
+
+<button onclick="simulateEyesClosed()">Simulate Eyes Closed</button>
+
+<button onclick="resetEyes()">Reset Eyes</button>
+
+</div>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="card">
+
+<h3><i class="fas fa-phone"></i> Emergency Contact</h3>
+
+<input type="text" id="contactName" placeholder="Family Member Name">
+
+<input type="text" id="contactNumber" placeholder="Phone Number">
+
+<button class="primary" onclick="saveContact()">Save Contact</button>
+
+<div id="savedContact" class="status active"></div>
+
+</div>
+
+<div class="card">
+
+<h3><i class="fas fa-triangle-exclamation"></i> Emergency SOS</h3>
+
+<div id="sosStatus" class="status active">No Emergency</div>
+
+<button class="danger-btn" onclick="triggerSOS()">Trigger SOS</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
