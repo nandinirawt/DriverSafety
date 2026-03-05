@@ -1,3 +1,4 @@
+const backendURL = "http://localhost:3000";
 let emergencyContact=null;
 let eyeInterval=null;
 let eyeSeconds=0;
@@ -34,6 +35,7 @@ const stream=await navigator.mediaDevices.getUserMedia({video:true});
 
 video.srcObject=stream;
 video.style.display="block";
+fetch(`${backendURL}/driving/start`, {method:"POST"});
 
 }
 
