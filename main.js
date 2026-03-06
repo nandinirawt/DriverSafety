@@ -30,4 +30,23 @@ function startDemo() {
       triggerSOS();
     }
   }, 10000);
+
+let currentMode = "driver";
+
+function setMode(mode) {
+  currentMode = mode;
+  console.log("Mode:", mode);
 }
+window.setMode = function(mode) { {
+  console.log("Mode switched to:", mode);
+
+  const status = document.getElementById("status");
+
+  if (mode === "driver") {
+    status.innerText = "Driver monitoring active";
+  }
+
+  if (mode === "road") {
+    status.innerText = "Road hazard detection active";
+  }
+};

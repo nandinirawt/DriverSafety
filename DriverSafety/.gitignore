@@ -1,0 +1,8 @@
+venv/
+Dataset/
+runs/
+*.pt
+__pycache__/
+.DS_Store
+*.pt
+*.pth
