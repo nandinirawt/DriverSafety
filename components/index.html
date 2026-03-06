@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-<title>Aura Drive</title>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<title>DriveSafe</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -15,100 +20,524 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <body>
 
-<!-- LOGIN SCREEN -->
+<div class="container">
 
-<div id="authScreen">
-<div class="auth-box">
+<!-- HEADER -->
 
-<h2><i class="fas fa-car"></i> Aura Drive Login</h2>
-
-<input type="text" id="username" placeholder="Username">
-
-<input type="password" id="password" placeholder="Password">
-
-<button class="primary" onclick="login()">Login</button>
-
-<button onclick="signup()">Sign Up</button>
-
-</div>
+<div class="header">
+<h1>DriveSafe</h1>
+<p>AI Powered Driver Safety Monitoring</p>
 </div>
 
-<!-- DASHBOARD -->
 
-<div id="dashboard">
+<!-- FEATURE DASHBOARD -->
 
-<h1><i class="fas fa-car"></i> Aura Drive Dashboard</h1>
+<div id="homePage" class="dashboard">
 
-<div class="top-section">
+<!-- BIG FEATURES -->
 
-<!-- ROAD CAMERA -->
+<div class="card big-card" onclick="openFeature('driverPage')">
+<i class="fas fa-eye"></i>
+<h2>Driver Monitoring</h2>
+<p>Detect fatigue, yawning and distraction</p>
+</div>
 
-<div class="card">
+<div class="card big-card" onclick="openFeature('potholePage')">
+<i class="fas fa-road"></i>
+<h2>Pothole Detection</h2>
+<p>Identify road hazards in real time</p>
+</div>
 
-<h3><i class="fas fa-road"></i> Road Camera Monitoring</h3>
 
-<video id="roadCamera" autoplay></video>
+<!-- SMALL FEATURES -->
 
-<div id="roadStatus" class="status active">Road Clear</div>
+<div class="card" onclick="openFeature('analyticsPage')">
+<i class="fas fa-chart-line"></i>
+<h2>Driver Analytics</h2>
+<p>View performance and safety trends</p>
+</div>
 
-<button class="primary" onclick="startRoadCamera()">Start Road Camera</button>
+<div class="card" onclick="openFeature('sosPage')">
+<i class="fas fa-exclamation-triangle"></i>
+<h2>Emergency SOS</h2>
+<p>Send emergency alerts instantly</p>
+</div>
 
-<button onclick="detectObstacle()">Detect Obstacle</button>
+<div class="card" onclick="openFeature('locatorPage')">
+<i class="fas fa-map-marker-alt"></i>
+<h2>Emergency Locator</h2>
+<p>Find nearby hospitals, police stations & garages</p>
+</div>
+
+<div class="card" onclick="openFeature('riskPage')">
+<i class="fas fa-shield-alt"></i>
+<h2>Risk Analyzer</h2>
+<p>Analyze road safety risk based on location</p>
+</div>
 
 </div>
 
-<!-- DRIVER CAMERA -->
 
-<div class="card">
+<!-- DRIVER MONITORING PAGE -->
 
-<h3><i class="fas fa-eye"></i> AI Driver Monitoring</h3>
+<div id="driverPage" class="feature-page">
+
+<div class="driver-top">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<div class="live-stats">
+
+<div class="stat-card">
+<i class="fas fa-eye"></i>
+<h3 id="eyeOpenValue">76%</h3>
+<p>EYE OPENNESS</p>
+</div>
+
+<div class="stat-card">
+<i class="fas fa-smile"></i>
+<h3 id="headPoseValue">83%</h3>
+<p>HEAD POSE</p>
+</div>
+
+<div class="stat-card">
+<i class="fas fa-eye-slash"></i>
+<h3 id="blinkRateValue">19/m</h3>
+<p>BLINK RATE</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="driver-layout">
+
+<!-- LEFT SIDE CAMERA -->
+
+<div class="camera-panel">
+
+<h3>Driver Camera Feed</h3>
+
+<div class="camera-box">
 
 <video id="driverCamera" autoplay></video>
 
-<div id="driverStatus" class="status active">Driver Active</div>
+<div class="live-indicator">
+<span class="dot"></span> LIVE
+</div>
 
-<div id="eyeTimer" class="status warning"></div>
+</div>
 
-<button class="primary" onclick="startDriverCamera()">Start Driver Camera</button>
+<button class="start-btn" onclick="startDriverCamera()">
+Start Monitoring
+</button>
 
-<button onclick="simulateEyesClosed()">Simulate Eyes Closed</button>
+</div>
 
-<button onclick="resetEyes()">Reset Eyes</button>
+
+
+<!-- RIGHT SIDE AI DASHBOARD -->
+
+<div class="analysis-panel">
+
+<h3>AI Driver Analysis</h3>
+
+<div class="gauges">
+
+<div class="gauge">
+
+<svg class="progress-ring" width="140" height="140">
+<circle class="progress-bg" cx="70" cy="70" r="60"/>
+<circle class="progress-bar alert" cx="70" cy="70" r="60"
+id="alertCircle"/>
+</svg>
+
+<div class="gauge-text">
+<span id="alertValue">87</span>
+<p>Alertness</p>
+</div>
+
+</div>
+
+
+<div class="gauge">
+
+<svg class="progress-ring" width="140" height="140">
+<circle class="progress-bg" cx="70" cy="70" r="60"/>
+<circle class="progress-bar fatigue" cx="70" cy="70" r="60"
+id="fatigueCircle"/>
+</svg>
+
+<div class="gauge-text">
+<span id="fatigueValue">15</span>
+<p>Fatigue</p>
+</div>
+
+</div>
+
+</div>
+
+
+
+<h3>Metrics</h3>
+
+<div class="metric">
+    <h3>Driver Safety Meter</h3>
+
+<div class="safety-meter">
+
+<div class="meter-bar">
+
+<div id="safetyIndicator"></div>
+
+</div>
+
+<div class="meter-labels">
+
+<span>SAFE</span>
+<span>WARNING</span>
+<span>DROWSY</span>
 
 </div>
 
 </div>
 
-<div class="dashboard-grid">
-
-<div class="card">
-
-<h3><i class="fas fa-phone"></i> Emergency Contact</h3>
-
-<input type="text" id="contactName" placeholder="Family Member Name">
-
-<input type="text" id="contactNumber" placeholder="Phone Number">
-
-<button class="primary" onclick="saveContact()">Save Contact</button>
-
-<div id="savedContact" class="status active"></div>
-
-</div>
-
-<div class="card">
-
-<h3><i class="fas fa-triangle-exclamation"></i> Emergency SOS</h3>
-
-<div id="sosStatus" class="status active">No Emergency</div>
-
-<button class="danger-btn" onclick="triggerSOS()">Trigger SOS</button>
-
+<label>Drowsiness Level</label>
+<div class="bar">
+<div id="drowsyBar" style="width:20%"></div>
 </div>
 
 </div>
 
+<div class="metric">
+
+<label>Driver Distraction</label>
+<div class="bar">
+<div id="distractionBar" style="width:10%"></div>
 </div>
 
+</div>
+
+<div class="metric">
+
+<label>Yawn Detection</label>
+<div class="bar">
+<div id="yawnBar" style="width:5%"></div>
+</div>
+
+</div>
+
+<div class="metric">
+
+<label>Driver State</label>
+<div class="bar">
+<div id="stateBar" class="safeBar" style="width:30%"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- BEHAVIOR LOG -->
+
+<div class="behavior-log">
+
+<h3>Behavior Log</h3>
+
+<div class="log-header">
+
+<span>TIME</span>
+<span>EVENT</span>
+<span>SEVERITY</span>
+
+</div>
+
+<div id="logContainer" class="log-container">
+
+<div class="log-row">
+
+<span>14:32:05</span>
+<span>Eyes closed for 2.3s</span>
+<span class="warning">WARNING</span>
+
+</div>
+
+<div class="log-row">
+
+<span>14:31:42</span>
+<span>Head tilt detected</span>
+<span class="info">INFO</span>
+
+</div>
+
+<div class="log-row">
+
+<span>14:30:18</span>
+<span>Yawn detected</span>
+<span class="warning">WARNING</span>
+
+</div>
+
+<div class="log-row">
+
+<span>14:28:55</span>
+<span>Phone usage detected</span>
+<span class="danger">DANGER</span>
+
+</div>
+
+<div class="log-row">
+
+<span>14:27:10</span>
+<span>Normal driving posture</span>
+<span class="safe">SAFE</span>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- POTHOLE PAGE -->
+
+<div id="potholePage" class="feature-page">
+
+<button class="back-small" onclick="goHome()">← Back</button>
+
+<div class="pothole-wrapper">
+
+<div class="pothole-title-row">
+
+<div>
+<h1>Pothole Detection</h1>
+<p>AI-powered road hazard identification</p>
+</div>
+
+<div class="pothole-filter">
+<button class="active">Road</button>
+<button>Pothole</button>
+<button>Major</button>
+</div>
+
+</div>
+
+
+<div class="camera-card">
+
+<div class="camera-header">
+
+<div class="camera-left">
+<i class="fas fa-camera"></i>
+<span>ROAD CAMERA</span>
+</div>
+
+<div class="camera-right">
+<span class="speed">🚗 60 km/h</span>
+</div>
+
+</div>
+
+
+<div class="camera-view">
+
+<div class="front-cam">FRONT CAM</div>
+
+<div class="lane"></div>
+<div class="lane"></div>
+<div class="lane"></div>
+
+<div class="road-status">✔ Road Clear</div>
+
+</div>
+
+</div>
+
+
+<div class="road-info">
+
+⚠ Road conditions are optimal  
+<br>
+<span>Confidence: 98%</span>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SOS PAGE -->
+
+<div id="sosPage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Emergency SOS</h2>
+
+<input id="contactName" placeholder="Contact Name">
+<input id="contactNumber" placeholder="Phone Number">
+
+<button onclick="saveContact()">Save Contact</button>
+
+<button class="danger" onclick="triggerSOS()">Send SOS</button>
+
+<div id="sosStatus"></div>
+
+</div>
+
+
+<!-- ANALYTICS PAGE -->
+
+<div id="analyticsPage" class="feature-page">
+
+<button class="back-small" onclick="goHome()">← Back</button>
+
+<h1>Driver Analytics</h1>
+<p>7-day performance overview & behavioral insights</p>
+
+<div class="analytics-cards">
+
+<div class="analytics-card">
+<i class="fas fa-eye"></i>
+<h2>22%</h2>
+<p>Avg Fatigue Score</p>
+</div>
+
+<div class="analytics-card">
+<i class="fas fa-shield-alt"></i>
+<h2>88%</h2>
+<p>Attention Level</p>
+</div>
+
+<div class="analytics-card">
+<i class="fas fa-exclamation-triangle"></i>
+<h2>34</h2>
+<p>Potholes Found</p>
+</div>
+
+<div class="analytics-card">
+<i class="fas fa-bolt"></i>
+<h2>12</h2>
+<p>Alerts Triggered</p>
+</div>
+
+</div>
+
+
+<div class="chart-box small-chart">
+<h3>Weekly Fatigue & Distraction</h3>
+<canvas id="fatigueChart"></canvas>
+</div>
+
+
+<div class="chart-row">
+
+<div class="chart-box half-chart">
+<h3>Safety Score History</h3>
+<canvas id="safetyChart"></canvas>
+</div>
+
+<div class="chart-box half-chart">
+<h3>Driving Behavior Breakdown</h3>
+<canvas id="behaviorChart"></canvas>
+</div>
+</div>
+</div>
+<!-- LOCATOR PAGE -->
+<div id="locatorPage" class="feature-page">
+
+<button class="back-small" onclick="goHome()">← Back</button>
+
+<div class="locator-container">
+
+<h2>Emergency Locator</h2>
+<p class="sub">📍 Current location: Mumbai, Maharashtra</p>
+
+<div class="gps-status">
+<span class="dot"></span> GPS Active
+</div>
+
+
+<!-- STATS -->
+
+<div class="locator-stats">
+
+<div class="stat-card">
+<h3 id="hospitalCount">0</h3>
+<p>Hospitals</p>
+
+</div>
+
+<div class="stat-card">
+<h3 id="policeCount">0</h3>
+<p>Police</p>
+</div>
+
+<div class="stat-card">
+<h3 id="fuelCount">0</h3>
+<p>Fuel</p>
+</div>
+
+<div class="stat-card">
+<h3 id="garageCount">0</h3>
+<p>Garages</p>
+</div>
+
+
+
+</div>
+
+
+<!-- MAP -->
+
+<div class="map-box">
+
+<h3>Live Map View</h3>
+
+<div id="map" style="height:350px;border-radius:12px;"></div>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<input class="service-search" placeholder="Search services...">
+
+
+<!-- SERVICES -->
+
+<div id="serviceList" class="service-list"></div>
+</div>
+<!--  RISK ANALYTICS PAGE -->
+  <div id="riskPage" class="feature-page">
+
+<button class="back-small" onclick="goHome()">← Back</button>
+
+<h1>Risk Analyzer</h1>
+<p>AI based road safety analysis</p>
+
+<div class="risk-box">
+
+<h3>Current Area Risk Score</h3>
+
+<div class="risk-meter">
+<div class="risk-fill" style="width:45%"></div>
+</div>
+
+<p>Moderate Risk Area</p>
+
+<ul>
+<li>⚠ Frequent potholes detected</li>
+<li>🚗 High traffic density</li>
+<li>🌧 Poor weather visibility</li>
+</ul>
+
+</div>
+
+</div>
 <script src="script.js"></script>
 
 </body>
