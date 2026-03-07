@@ -56,6 +56,7 @@ def calculate_mar(mouth):
 
 
 # ---------------- MAIN PROCESS ----------------
+print("Detection.py is running")
 def process_frame(frame):
 
     global fatigue_score, eye_counter, yawn_counter, attention_counter

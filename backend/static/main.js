@@ -30,6 +30,10 @@ function startDemo() {
       triggerSOS();
     }
   }, 10000);
+}
+
+
+// ---------------- MODE SWITCH ----------------
 
 let currentMode = "driver";
 
@@ -37,7 +41,8 @@ function setMode(mode) {
   currentMode = mode;
   console.log("Mode:", mode);
 }
-window.setMode = function(mode) { {
+
+window.setMode = function(mode) {
   console.log("Mode switched to:", mode);
 
   const status = document.getElementById("status");

@@ -1,63 +1,248 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AI Driver Drowsiness Monitor</title>
-    <style>
-        body { 
-            background: #111; 
-            color: white; 
-            text-align: center; 
-            font-family: Arial;
-        }
-        h1 { margin-top: 20px; }
 
-        #alertBox {
-            width: 200px;
-            height: 50px;
-            margin: 20px auto;
-            line-height: 50px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .safe { background: green; }
-        .warning { background: orange; }
-        .danger { background: red; }
-    </style>
+<title>DriveSafe AI</title>
+
+<!-- CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<!-- Icons -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
+
+
 <body>
 
-<h1>AI Driver Drowsiness Detection</h1>
+<div class="container">
 
-<img src="{{ url_for('video') }}" width="700">
+<!-- HEADER -->
 
-<h2 id="score">Fatigue Score: 0</h2>
+<div class="header">
+<h1>DriveSafe</h1>
+<p>AI Powered Driver Safety Monitoring</p>
+</div>
 
-<div id="alertBox" class="safe">SAFE</div>
+
+<!-- DASHBOARD -->
+
+<div id="homePage" class="dashboard">
+
+<div class="card big-card" onclick="openFeature('driverPage')">
+<i class="fas fa-eye"></i>
+<h2>Driver Monitoring</h2>
+<p>Detect fatigue, yawning and distraction</p>
+</div>
+
+<div class="card big-card" onclick="openFeature('potholePage')">
+<i class="fas fa-road"></i>
+<h2>Pothole Detection</h2>
+<p>Identify road hazards in real time</p>
+</div>
+
+<div class="card" onclick="openFeature('analyticsPage')">
+<i class="fas fa-chart-line"></i>
+<h2>Driver Analytics</h2>
+</div>
+
+<div class="card" onclick="openFeature('sosPage')">
+<i class="fas fa-exclamation-triangle"></i>
+<h2>Emergency SOS</h2>
+</div>
+
+<div class="card" onclick="openFeature('locatorPage')">
+<i class="fas fa-map-marker-alt"></i>
+<h2>Emergency Locator</h2>
+</div>
+
+<div class="card" onclick="openFeature('riskPage')">
+<i class="fas fa-shield-alt"></i>
+<h2>Risk Analyzer</h2>
+</div>
+
+</div>
+
+
+
+<!-- DRIVER MONITORING PAGE -->
+
+<div id="driverPage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Driver Monitoring</h2>
+
+<div class="camera-panel">
+
+<h3>Driver Camera Feed</h3>
+
+<div class="camera-box">
+
+<!-- FLASK VIDEO STREAM -->
+<img id="driverCamera" src="{{ url_for('video') }}" width="100%">
+
+<div class="live-indicator">
+<span class="dot"></span> LIVE
+</div>
+
+</div>
+
+</div>
+
+<p id="status">Status: <span class="safe">Awake</span></p>
+
+</div>
+
+
+
+
+
+<!-- POTHOLE PAGE -->
+
+<div id="potholePage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Pothole Detection</h2>
+
+<div class="road-camera-wrapper">
+
+  <video id="roadCamera" autoplay playsinline></video>
+
+  <canvas id="overlay"></canvas>
+
+</div>
+
+<p id="road-status">Road monitoring active</p>
+
+</div>
+
+  <!-- Detection boxes will be drawn here -->
+  <canvas id="overlay"
+          style="position:absolute; top:0; left:0; pointer-events:none;">
+  </canvas>
+
+</div>
+
+<p id="road-status">Road monitoring active</p>
+
+</div>
+
+
+
+<!-- SOS PAGE -->
+
+<div id="sosPage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Emergency SOS</h2>
+
+<button class="danger" onclick="triggerSOS()">Send SOS</button>
+
+<p id="sos-status">SOS inactive</p>
+
+</div>
+
+
+
+<!-- ANALYTICS PAGE -->
+
+<div id="analyticsPage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Driver Analytics</h2>
+
+<canvas id="fatigueChart"></canvas>
+
+</div>
+
+
+
+<!-- LOCATOR PAGE -->
+
+<div id="locatorPage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Emergency Locator</h2>
+
+<div id="map" style="height:350px;border-radius:10px;"></div>
+
+</div>
+
+
+
+<!-- RISK PAGE -->
+
+<div id="riskPage" class="feature-page">
+
+<button class="back" onclick="goHome()">← Back</button>
+
+<h2>Risk Analyzer</h2>
+
+<div class="risk-meter">
+<div class="risk-fill" style="width:45%"></div>
+</div>
+
+<p>Moderate Risk Area</p>
+
+</div>
+
+
+
+</div>
+
+
+
+<!-- SCRIPTS -->
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+<script src="{{ url_for('static', filename='road.js') }}"></script>
+<script src="{{ url_for('static', filename='ai.js') }}"></script>
+<script src="{{ url_for('static', filename='alert.js') }}"></script>
+
 
 <script>
-    setInterval(() => {
-        fetch('/fatigue')
-            .then(res => res.json())
-            .then(data => {
-                const score = data.score;
-                document.getElementById('score').innerText =
-                    "Fatigue Score: " + score;
 
-                const box = document.getElementById('alertBox');
+async function startCamera() {
 
-                if (score < 3) {
-                    box.className = "safe";
-                    box.innerText = "SAFE";
-                } else if (score < 6) {
-                    box.className = "warning";
-                    box.innerText = "WARNING";
-                } else {
-                    box.className = "danger";
-                    box.innerText = "DROWSY!";
-                }
-            });
-    }, 1000);
+const video = document.getElementById("roadCamera");
+
+if(!video) return;
+
+try {
+
+const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+video.srcObject = stream;
+
+}
+
+catch(err){
+
+console.error("Camera error:", err);
+
+}
+
+}
+
+startCamera();
+
 </script>
 
 </body>
