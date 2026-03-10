@@ -32,7 +32,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <div class="header">
 <h1>DriveSafe</h1>
-<p>AI Powered Driver Safety Monitoring</p>
+<p class="subtitle">AI Powered Driver Safety Monitoring</p>
 </div>
 
 
@@ -40,49 +40,55 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <div id="homePage" class="dashboard">
 
-<div class="card big-card" onclick="openFeature('driverPage')">
+<div class="feature-card" onclick="openFeature('driverPage')">
 <i class="fas fa-eye"></i>
-<h2>Driver Monitoring</h2>
+<h3>Driver Monitoring</h3>
 <p>Detect fatigue, yawning and distraction</p>
 </div>
 
-<div class="card big-card" onclick="openFeature('potholePage')">
+<div class="feature-card" onclick="openFeature('potholePage')">
 <i class="fas fa-road"></i>
-<h2>Pothole Detection</h2>
+<h3>Pothole Detection</h3>
 <p>Identify road hazards in real time</p>
 </div>
 
-<div class="card" onclick="openFeature('analyticsPage')">
-<i class="fas fa-chart-line"></i>
-<h2>Driver Analytics</h2>
+<div class="feature-card" onclick="openFeature('analyticsPage')">
+<i class="fa-solid fa-chart-line"></i>
+<h3>Driver Analytics</h3>
+<p>Analyze driving behavior and safety patterns</p>
 </div>
 
-<div class="card" onclick="openFeature('sosPage')">
-<i class="fas fa-exclamation-triangle"></i>
-<h2>Emergency SOS</h2>
+<div class="feature-card" onclick="openFeature('sosPage')">
+<i class="fa-solid fa-phone"></i>
+<h3>Emergency Contacts</h3>
+<p>Save trusted contacts and send alerts</p>
 </div>
 
-<div class="card" onclick="openFeature('locatorPage')">
-<i class="fas fa-map-marker-alt"></i>
-<h2>Emergency Locator</h2>
+<div class="feature-card" onclick="openEmergencyLocator()">
+<i class="fa-solid fa-location-dot"></i>
+<h3>Emergency Locator</h3>
+<p>Find nearby hospitals, police stations and fuel stations in emergencies</p>
 </div>
 
-<div class="card" onclick="openFeature('riskPage')">
-<i class="fas fa-shield-alt"></i>
-<h2>Risk Analyzer</h2>
+<div class="feature-card" onclick="openGeoRisk()">
+<i class="fa-solid fa-map-location-dot"></i>
+<h3>GeoRisk Analysis</h3>
+<p>Live accident-prone zone detection</p>
 </div>
 
 </div>
-
 
 
 <!-- DRIVER MONITORING PAGE -->
-
 <div id="driverPage" class="feature-page">
 
 <button class="back" onclick="goHome()">← Back</button>
 
 <h2>Driver Monitoring</h2>
+
+<div class="driver-layout">
+
+<!-- CAMERA SIDE -->
 
 <div class="camera-panel">
 
@@ -90,8 +96,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <div class="camera-box">
 
-<!-- FLASK VIDEO STREAM -->
-<img id="driverCamera" src="{{ url_for('video') }}" width="100%">
+<img id="driverCamera" src="/video" width="100%">
 
 <div class="live-indicator">
 <span class="dot"></span> LIVE
@@ -99,9 +104,83 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 </div>
 
+<button class="start-btn" onclick="startDemo()">Start Monitoring</button>
+
 </div>
 
-<p id="status">Status: <span class="safe">Awake</span></p>
+
+<!-- AI ANALYTICS SIDE -->
+
+<div class="analytics-panel">
+
+<h3>AI Driver Analysis</h3>
+
+<div class="chart-row">
+
+<canvas id="alertChart"></canvas>
+<canvas id="fatigueChart"></canvas>
+
+</div>
+
+
+<h3>Metrics</h3>
+<!-- DRIVER METRICS -->
+<h3>Fatigue Score: <span id="fatigueScore">0</span></h3>
+<h3>Status: <span id="driverStatus">Alert</span></h3>
+
+<div class="metric">
+
+<p>Driver Safety Meter</p>
+<div class="meter"><div id="safetyBar"></div></div>
+
+</div>
+
+<div class="metric">
+
+<p>Drowsiness Level</p>
+<div class="meter"><div id="drowsyBar"></div></div>
+
+</div>
+
+<div class="metric">
+
+<p>Driver Distraction</p>
+<div class="meter"><div id="distractionBar"></div></div>
+
+</div>
+
+<div class="metric">
+
+<p>Yawn Detection</p>
+<div class="meter"><div id="yawnBar"></div></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BEHAVIOR LOG -->
+
+<div class="behavior-log">
+
+<h3>Behavior Log</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>TIME</th>
+<th>EVENT</th>
+<th>SEVERITY</th>
+</tr>
+</thead>
+
+<tbody id="behaviorTable">
+</tbody>
+
+</table>
 
 </div>
 
@@ -119,15 +198,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <div class="road-camera-wrapper">
 
-  <video id="roadCamera" autoplay playsinline></video>
+<video id="roadCamera" autoplay playsinline></video>
 
-  <canvas id="overlay"></canvas>
-
-</div>
-
-<p id="road-status">Road monitoring active</p>
+<canvas id="overlay"></canvas>
 
 </div>
+
+
 
   <!-- Detection boxes will be drawn here -->
   <canvas id="overlay"
@@ -136,7 +213,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 </div>
 
-<p id="road-status">Road monitoring active</p>
+
 
 </div>
 
@@ -148,7 +225,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <button class="back" onclick="goHome()">← Back</button>
 
-<h2>Emergency SOS</h2>
+<h2>Emergency Contact</h2>
+<p>Manage emergency contacts and send alerts during accidents.</p>
 
 <button class="danger" onclick="triggerSOS()">Send SOS</button>
 
@@ -186,23 +264,43 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 
 
-<!-- RISK PAGE -->
 
-<div id="riskPage" class="feature-page">
+
+<!-- GEO RISK ANALYSIS PAGE -->
+
+<div id="geoRiskPage" class="feature-page" style="display:none">
 
 <button class="back" onclick="goHome()">← Back</button>
 
-<h2>Risk Analyzer</h2>
+<div class="geo-layout">
 
-<div class="risk-meter">
-<div class="risk-fill" style="width:45%"></div>
+<div class="geo-sidebar">
+
+<h3>Accident Alerts</h3>
+
+<div class="alert-card">
+<b>Jaipur - NH48</b>
+<p>⚠ High Accident Zone</p>
+<p>Location: 26.9124, 75.7873</p>
 </div>
 
-<p>Moderate Risk Area</p>
+<div class="alert-card">
+<b>Ajmer Highway</b>
+<p>⚠ Moderate Risk</p>
+<p>Location: 26.4499, 74.6399</p>
+</div>
+
+<div class="alert-card">
+<b>Udaipur Road</b>
+<p>⚠ Accident Reported</p>
+<p>Location: 24.5854, 73.7125</p>
+</div>
 
 </div>
 
+<div id="riskMap"></div>
 
+</div>
 
 </div>
 
@@ -244,6 +342,149 @@ console.error("Camera error:", err);
 startCamera();
 
 </script>
+<script>
 
+function updateMetrics(){
+
+fetch("/fatigue")
+.then(res => res.json())
+.then(data => {
+
+document.getElementById("fatigueScore").innerText = data.fatigue
+document.getElementById("driverStatus").innerText = data.status
+
+})
+
+}
+
+setInterval(updateMetrics,1000)
+
+</script>
+<script>
+
+function updateBehaviorLog(){
+
+fetch("/behavior_log")
+.then(res => res.json())
+.then(data => {
+
+let logList = document.getElementById("behaviorLog")
+
+logList.innerHTML = ""
+
+data.reverse().forEach(item => {
+
+let li = document.createElement("li")
+li.textContent = item
+logList.appendChild(li)
+
+})
+
+})
+
+}
+
+setInterval(updateBehaviorLog,1500)
+
+</script>
+<script>
+
+function updateBehaviorLog(){
+
+fetch("/behavior_log")
+.then(res => res.json())
+.then(data => {
+
+let table = document.getElementById("behaviorTable")
+
+table.innerHTML = ""
+
+data.reverse().forEach(log => {
+
+let row = `
+<tr>
+<td>${log.time}</td>
+<td>${log.event}</td>
+<td class="${log.severity}">${log.severity.toUpperCase()}</td>
+</tr>
+`
+
+table.innerHTML += row
+
+})
+
+})
+
+}
+
+setInterval(updateBehaviorLog,1500)
+
+</script>
+<script>
+
+function updateMetrics(){
+
+fetch("/fatigue")
+.then(res => res.json())
+.then(data => {
+
+let score = data.fatigue
+
+document.getElementById("fatigueScore").innerText = score
+
+// update progress bars
+document.getElementById("safetyBar").style.width = (100-score) + "%"
+document.getElementById("drowsyBar").style.width = score + "%"
+document.getElementById("distractionBar").style.width = Math.min(score+10,100) + "%"
+document.getElementById("yawnBar").style.width = Math.min(score+5,100) + "%"
+
+})
+
+}
+
+setInterval(updateMetrics,1000)
+
+</script>
+<script>
+
+function updateBehaviorLog(){
+
+fetch("/behavior_log")
+.then(res => res.json())
+.then(data => {
+
+let table = document.getElementById("behaviorTable")
+
+if(!table) return
+
+table.innerHTML = ""
+
+data.reverse().forEach(log => {
+
+table.innerHTML += `
+<tr>
+<td>${log.time}</td>
+<td>${log.event}</td>
+<td class="${log.severity}">${log.severity.toUpperCase()}</td>
+</tr>
+`
+
+})
+
+})
+
+}
+
+setInterval(updateBehaviorLog,1000)
+
+</script>
+<div id="road-status" class="road-status">
+  <span>Road monitoring active</span>
+
+  <div class="status-toggle">
+    <span class="status-text">ON</span>
+    <div class="status-dot"></div>
+  </div>
+</div>
 </body>
 </html>
