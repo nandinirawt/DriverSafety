@@ -51,15 +51,15 @@ video.srcObject=stream
 }
 
 
-async function startRoadCamera(){
+// async function startRoadCamera(){
 
-const video=document.getElementById("roadCamera")
+// const video=document.getElementById("roadCamera")
 
-const stream=await navigator.mediaDevices.getUserMedia({video:true})
+// const stream=await navigator.mediaDevices.getUserMedia({video:true})
 
-video.srcObject=stream
+// video.srcObject=stream
 
-}
+// }
 
 
 let emergencyContact=null
@@ -439,4 +439,36 @@ function stopDriverCamera(){
 
   }
 
+
+}
+let driverCameraRunning = false;
+
+async function startDriverCamera(){
+
+    const video = document.getElementById("driverCamera");
+
+    if(!video || driverCameraRunning){
+        return;
+    }
+
+    video.src = "/video";
+    driverCameraRunning = true;
+
+    console.log("Driver monitoring started");
+}
+
+
+function stopDriverCamera(){
+
+    const video = document.getElementById("driverCamera");
+
+    if(video){
+
+        video.src = "";
+
+    }
+
+    driverCameraRunning = false;
+
+    console.log("Driver monitoring stopped");
 }

@@ -184,36 +184,33 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 </div>
 
+</div>   <!-- ADD THIS -->
+
 
 
 
 
 <!-- POTHOLE PAGE -->
 
+<!-- POTHOLE PAGE -->
+
 <div id="potholePage" class="feature-page">
 
-<button class="back" onclick="goHome()">← Back</button>
+    <button class="back" onclick="goHome()">← Back</button>
 
-<h2>Pothole Detection</h2>
+    <h2>Pothole Detection</h2>
 
-<div class="road-camera-wrapper">
+    <div class="road-camera-wrapper">
 
-<video id="roadCamera" autoplay playsinline></video>
+        <video id="roadCamera" autoplay playsinline></video>
 
-<canvas id="overlay"></canvas>
+        <canvas id="overlay"
+                style="position:absolute; top:0; left:0; pointer-events:none;">
+        </canvas>
 
-</div>
+    </div>
 
-
-
-  <!-- Detection boxes will be drawn here -->
-  <canvas id="overlay"
-          style="position:absolute; top:0; left:0; pointer-events:none;">
-  </canvas>
-
-</div>
-
-
+    <p id="ai-result">Road detection is running...</p>
 
 </div>
 
@@ -315,33 +312,33 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <script src="{{ url_for('static', filename='alert.js') }}"></script>
 
 
-<script>
+<!-- <script>
 
-async function startCamera() {
+// async function startCamera() {
 
-const video = document.getElementById("roadCamera");
+// const video = document.getElementById("roadCamera");
 
-if(!video) return;
+// if(!video) return;
 
-try {
+// try {
 
-const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+// const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
-video.srcObject = stream;
+// video.srcObject = stream;
 
-}
+// }
 
-catch(err){
+// catch(err){
 
-console.error("Camera error:", err);
+// console.error("Camera error:", err);
 
-}
+// }
 
-}
+// }
 
 startCamera();
 
-</script>
+</script> -->
 <script>
 
 function updateMetrics(){
@@ -360,7 +357,7 @@ document.getElementById("driverStatus").innerText = data.status
 setInterval(updateMetrics,1000)
 
 </script>
-<script>
+<!-- <script>
 
 function updateBehaviorLog(){
 
@@ -386,7 +383,7 @@ logList.appendChild(li)
 
 setInterval(updateBehaviorLog,1500)
 
-</script>
+</script> -->
 <script>
 
 function updateBehaviorLog(){
@@ -479,12 +476,20 @@ setInterval(updateBehaviorLog,1000)
 
 </script>
 <div id="road-status" class="road-status">
-  <span>Road monitoring active</span>
+    
+    <span id="roadStatusText">Road monitoring OFF</span>
 
-  <div class="status-toggle">
-    <span class="status-text">ON</span>
-    <div class="status-dot"></div>
-  </div>
+    <button
+        id="roadToggle"
+        class="status-toggle"
+        onclick="toggleRoadMonitoring()"
+        type="button">
+
+        <span id="roadStatusButton" class="status-text">OFF</span>
+        <span id="roadStatusDot" class="status-dot"></span>
+
+    </button>
+
 </div>
 </body>
 </html>
